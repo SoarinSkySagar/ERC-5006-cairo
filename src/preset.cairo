@@ -1,4 +1,5 @@
 use starknet::ContractAddress;
+use erc5006_cairo::types::UserRecord;
 
 #[starknet::interface]
 pub trait IERC5006Mixin<TState> {
@@ -47,7 +48,6 @@ pub trait IERC5006Mixin<TState> {
 
 #[starknet::contract]
 pub mod ERC5006RentalNft {
-    use starknet::{ContractAddress, get_caller_address};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc1155::{ERC1155Component, ERC1155HooksEmptyImpl};
     use erc5006_cairo::erc5006::ERC5006Component;
@@ -63,7 +63,6 @@ pub mod ERC5006RentalNft {
     // ERC5006
     #[abi(embed_v0)]
     impl ERC5006Impl = ERC5006Component::ERC5006Impl<ContractState>;
-    impl ERC5006InternalImpl = ERC5006Component::InternalImpl<ContractState>;
 
     #[storage]
     struct Storage {
@@ -84,10 +83,5 @@ pub mod ERC5006RentalNft {
         ERC1155Event: ERC1155Component::Event,
         #[flat]
         ERC5006Event: ERC5006Component::Event,
-    }
-
-    #[constructor]
-    fn constructor(uri: felt252, record_limit: u256) {
-        self.erc5006.initializer(record_limit);
     }
 }

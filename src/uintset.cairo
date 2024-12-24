@@ -6,10 +6,10 @@ pub mod UintSet {
 
     #[starknet::storage_node]
     pub struct UintSet {
-        indices: Map<u256, u32>,
-        indices_len: u32,
-        values: Map<u32, u256>,
-        size: u32
+        pub indices: Map<u256, u32>,
+        pub indices_len: u32,
+        pub values: Map<u32, u256>,
+        pub size: u32
     }
 
     #[generate_trait]
@@ -25,7 +25,7 @@ pub mod UintSet {
         }
         fn remove(self: StoragePath<Mutable<UintSet>>, value: u256) {
             if (self.indices.read(value) != 0) {
-                self.values.write(self.indices.entry(value).read(), 0);
+                self.values.write(self.indices.read(value), 0);
                 self.indices.write(value, 0);
                 self.indices_len.write(self.indices_len.read() - 1);
                 self.size.write(self.size.read() - 1);
