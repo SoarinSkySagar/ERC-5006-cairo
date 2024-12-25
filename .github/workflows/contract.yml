@@ -1,0 +1,20 @@
+name: Run tests
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Scarb
+        uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-lock: ./Scarb.lock
+
+      - name: Build contracts
+        run: scarb build
+
+      - name: Run scarb fmt --check
+        run: scarb fmt --check
